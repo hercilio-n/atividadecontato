@@ -1,5 +1,5 @@
 package com.example.Aula.controller;
-
+import com.example.Aula.entities.Compromisso;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +20,7 @@ import com.example.Aula.entities.Compromisso;
 import com.example.Aula.repository.CompromissoRepository;
 
 @RestController
-@RequestMapping("/contatos")
+@RequestMapping("/compromissos")
 public class CompromissoController {
 	@Autowired
 	CompromissoRepository repo;
@@ -31,19 +31,23 @@ public class CompromissoController {
 	}
 		
 	@PostMapping()
-	public ResponseEntity<Compromisso> inserirCompromisso(@RequestBody Compromisso contato) {
-		Compromisso ct = repo.save(contato);
+	public ResponseEntity<Compromisso> inserirCompromisso(@RequestBody Compromisso compromisso) {
+		Compromisso ct = repo.save(compromisso);
 		return ResponseEntity.status(HttpStatus.CREATED).body(ct);
 	}
 	
-	@PutMapping("/{idcontato}")
-	public ResponseEntity<Compromisso> alterarCompromisso(@PathVariable("idcontato") Long idcontato, 
-			@RequestBody Compromisso contato) {
-		Optional<Compromisso> opCompromisso = repo.findById(idcontato);
+	@PutMapping("/{id}")
+	public ResponseEntity<Compromisso> alterarCompromisso(@PathVariable("id") Long idcompromisso, 
+			@RequestBody Compromisso compromisso) {
+		Optional<Compromisso> opCompromisso = repo.findById(idcompromisso);
 		try {
 			Compromisso ct = opCompromisso.get();		
-			ct.setNome(contato.getNome());
-			ct.setEmail(contato.getEmail());
+			ct.setLocalcomp(compromisso.getLocalcomp());
+			ct.setContato(compromisso.getContato());
+			ct.setDatacomp(compromisso.getDatacomp());
+			ct.setHora(compromisso.getHora());
+			ct.setStatus(compromisso.getStatus());
+			ct.setIdcontato(compromisso.getIdcontato());
 			repo.save(ct);
 			return ResponseEntity.status(HttpStatus.OK).body(ct);
 		}
