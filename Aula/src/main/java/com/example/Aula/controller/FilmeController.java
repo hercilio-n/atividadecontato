@@ -16,47 +16,53 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Aula.entities.Contato;
-import com.example.Aula.repository.ContatoRepository;
+import com.example.Aula.entities.Filme;
+import com.example.Aula.repository.FilmeRepository;
+
+import jakarta.persistence.Column;
 
 @RestController
-@RequestMapping("/contatos")
-public class ContatoController {
+@RequestMapping("/Filmes")
+public class FilmeController {
 	@Autowired
-	ContatoRepository repo;
+	FilmeRepository repo;
 	
 	@GetMapping()
-	public ResponseEntity<List<Contato>> getContatos() {
+	public ResponseEntity<List<Filme>> getFilmes() {
 		return ResponseEntity.status(HttpStatus.OK).body(repo.findAll());
 	}
 		
 	@PostMapping()
-	public ResponseEntity<Contato> inserirContato(@RequestBody Contato contato) {
-		Contato ct = repo.save(contato);
+	public ResponseEntity<Filme> inserirFilme(@RequestBody Filme Filme) {
+		Filme ct = repo.save(Filme);
 		return ResponseEntity.status(HttpStatus.CREATED).body(ct);
 	}
 	
-	@PutMapping("/{idcontato}")
-	public ResponseEntity<Contato> alterarContato(@PathVariable("idcontato") Long idcontato, 
-			@RequestBody Contato contato) {
-		Optional<Contato> opContato = repo.findById(idcontato);
+	@PutMapping("/{id}")
+	public ResponseEntity<Filme> alterarFilme(@PathVariable("id") Long idFilme, 
+			@RequestBody Filme Filme) {
+		Optional<Filme> opFilme = repo.findById(idFilme);
 		try {
-			Contato ct = opContato.get();		
-			ct.setNome(contato.getNome());
-			ct.setEmail(contato.getEmail());
+			Filme ct = opFilme.get();		
+			ct.setNome(Filme.getNome());
+			ct.setAnolan(Filme.getAnolan());
+			ct.setDiretor(Filme.getDiretor());
+			ct.setSinopse(Filme.getSinopse());
+			ct.setGenero(Filme.getGenero());
 			repo.save(ct);
 			return ResponseEntity.status(HttpStatus.OK).body(ct);
 		}
+	
 		catch(Exception e) {
 		   return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
 		
 	@GetMapping("/{id}")
-	public ResponseEntity<Contato> getUmContato(@PathVariable("id") long id) {
-		Optional<Contato> opContato = repo.findById(id);
+	public ResponseEntity<Filme> getUmFilme(@PathVariable("id") long id) {
+		Optional<Filme> opFilme = repo.findById(id);
 		try {
-			Contato ct = opContato.get();		
+			Filme ct = opFilme.get();		
 			return ResponseEntity.status(HttpStatus.OK).body(ct);
 		}
 		catch(Exception e) {
@@ -65,10 +71,10 @@ public class ContatoController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Contato> excluirUmContato(@PathVariable("id") long id) {
-		Optional<Contato> opContato = repo.findById(id);
+	public ResponseEntity<Filme> excluirUmFilme(@PathVariable("id") long id) {
+		Optional<Filme> opFilme = repo.findById(id);
 		try {
-			Contato ct = opContato.get();	
+			Filme ct = opFilme.get();	
 			repo.delete(ct);
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
