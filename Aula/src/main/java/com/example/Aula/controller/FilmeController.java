@@ -32,7 +32,7 @@ public class FilmeController {
 		return ResponseEntity.status(HttpStatus.OK).body(repo.findAll());
 	}
 		
-	@PostMapping()
+	@PostMapping("/cadastrar")
 	public ResponseEntity<Filme> inserirFilme(@RequestBody Filme Filme) {
 		Filme ct = repo.save(Filme);
 		return ResponseEntity.status(HttpStatus.CREATED).body(ct);
